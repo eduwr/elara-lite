@@ -1,15 +1,9 @@
-import express, { Request, Response } from "express";
-const dotenv = require("dotenv");
+import express from "express";
+import dotenv from "dotenv";
+import { Server } from "./server/server";
 
 dotenv.config();
 
-const app = express();
-const port = process.env.PORT;
+const server = new Server(express());
 
-app.get("/", (req: Request, res: Response) => {
-  res.send("Express + TS");
-});
-
-app.listen(port, () => {
-  console.log(`[server]: running on port ${port}`);
-});
+server.create();

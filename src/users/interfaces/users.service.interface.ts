@@ -1,7 +1,7 @@
-import { User } from "models/users";
+import { User } from "users/users.model";
 
 export interface UsersServiceI {
-  findAll(): User[];
+  findUsers(): User[];
   getUserById(id: string): User;
   createUser(): User;
   updateUser(): User;

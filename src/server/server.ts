@@ -1,29 +1,34 @@
-import { Request, Response, Express } from "express";
-import dotenv from "dotenv";
+import express, { Express, Router } from "express";
 
-dotenv.config();
+type EngineFactory = typeof express;
 
-interface Engine extends Express {}
+interface Engine extends EngineFactory {}
+
+interface EngineInstance extends Express {}
 
 interface ServerInterface {
-  create(): void;
+  app: EngineInstance;
+  run(port?: number | string): void;
 }
 
 export class Server implements ServerInterface {
-  constructor(private readonly engine: Engine) {}
-  create(): void {
-    const port = process.env.PORT;
-
-    this.engine.get("/", (req: Request, res: Response) => {
-      res.send("Express + TS");
-    });
-
-    this.engine.listen(port, () => {
-      console.log(`[server]: running on http://localhost:${port}`);
-    });
+  app;
+  constructor(
+    private readonly engine: Engine,
+    private readonly router?: Router
+  ) {
+    this.app = engine();
   }
 
-  middlewares(): void {
-    this.engine.use();
+  run(port: number | string = 8000): void {
+    this.app.use(this.engine.json());
+
+    if (this.router) {
+      this.app.use(this.router);
+    }
+
+    this.app.listen(port, () => {
+      console.log(`[server]: running on http://localhost:${port}`);
+    });
   }
 }

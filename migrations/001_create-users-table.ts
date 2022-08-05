@@ -1,6 +1,6 @@
 import { client } from "../src/database/connection";
 
-export const up = async () => {
+const up = async () => {
   const createUserTableQuery = `
   CREATE TABLE IF NOT EXISTS users (
     id TEXT PRIMARY KEY,
@@ -19,7 +19,7 @@ export const up = async () => {
   client.end();
 };
 
-export const down = async () => {
+const down = async () => {
   const dropUserTableQuery = `
     DROP TABLE IF EXISTS users
   `;
@@ -29,4 +29,9 @@ export const down = async () => {
   await client.query(dropUserTableQuery);
 
   client.end();
+};
+
+export default {
+  up,
+  down,
 };

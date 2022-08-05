@@ -1,3 +1,4 @@
+import { client } from "../database/connection";
 import express, { Express, Router } from "express";
 
 type EngineFactory = typeof express;
@@ -26,6 +27,16 @@ export class Server implements ServerInterface {
     if (this.router) {
       this.app.use(this.router);
     }
+    const handleConn = async () => {
+      await client.connect();
+      const res = await client.query("SELECT $1::text as message", [
+        "Hello world!",
+      ]);
+      console.log(res.rows[0].message); // Hello world!
+      await client.end();
+    };
+
+    handleConn();
 
     this.app.listen(port, () => {
       console.log(`[server]: running on http://localhost:${port}`);

@@ -1,9 +1,15 @@
 import express from "express";
 
-const noop = () => {};
+const noop = () => {
+  //
+};
 const routes = express.Router();
 
-routes.get("/", noop);
-routes.post("/", noop);
+routes.get("/", () => {
+  console.log("hellor GET");
+});
+routes.post("/", () => {
+  console.log("hellor POST");
+});
 
 export default routes;

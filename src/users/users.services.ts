@@ -1,7 +1,7 @@
 import { User } from "users/users.model";
-import { UsersServiceI } from "./interfaces/users.service.interface";
+import { UsersServiceInterface } from "./interfaces/users.service.interface";
 
-export class UserService implements UsersServiceI {
+export class UserService implements UsersServiceInterface {
   findUsers(): User[] {
     throw new Error("Method not implemented.");
   }

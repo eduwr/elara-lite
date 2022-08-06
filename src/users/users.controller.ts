@@ -1,7 +1,7 @@
-import { UserControllerI } from "./interfaces/users.controller.interface";
+import { UserControllerInterface } from "./interfaces/users.controller.interface";
 import { User } from "./users.model";
 
-export class UserController implements UserControllerI {
+export class UserController implements UserControllerInterface {
   index(): User[] {
     throw new Error("Method not implemented.");
   }

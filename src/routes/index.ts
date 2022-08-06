@@ -1,15 +1,16 @@
 import express from "express";
 
-const noop = () => {
-  //
-};
 const routes = express.Router();
 
-routes.get("/", () => {
-  console.log("hellor GET");
+routes.get("/", (req, res) => {
+  res.send({
+    hello: "GET",
+  });
 });
-routes.post("/", () => {
-  console.log("hellor POST");
+routes.post("/", (req, res) => {
+  res.send({
+    hello: "POST",
+  });
 });
 
 export default routes;

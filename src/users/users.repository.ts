@@ -25,11 +25,7 @@ export class UserRepository implements UsersRepositoryInterface {
 
     console.log({ query });
 
-    const response = (await this.db.query(
-      this.createUserQuery(user)
-    )) as Promise<User>;
-
-    console.log(response);
+    const response = this.db.query(this.createUserQuery(user)) as Promise<User>;
 
     return response;
   }

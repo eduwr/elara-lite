@@ -12,11 +12,11 @@ const up = async () => {
     updated_at TIMESTAMP
  );
   `;
+
   await client.connect();
 
   await client.query(createUserTableQuery);
-
-  client.end();
+  await client.end();
 };
 
 const down = async () => {
@@ -24,11 +24,7 @@ const down = async () => {
     DROP TABLE IF EXISTS users
   `;
 
-  await client.connect();
-
   await client.query(dropUserTableQuery);
-
-  client.end();
 };
 
 export default {

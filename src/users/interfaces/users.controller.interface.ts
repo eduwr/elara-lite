@@ -1,6 +1,6 @@
 import { User } from "users/users.model";
 
-export interface UserControllerI {
+export interface UserControllerInterface {
   index(): User[];
   show(): User;
   create(): User;

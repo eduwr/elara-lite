@@ -1,12 +1,8 @@
-import express from "express";
-import dotenv from "dotenv";
-import { Server } from "./server/server";
-import { client } from "./database/connection";
+import { Server } from "server";
+import app from "./app";
 
-dotenv.config();
+const port = process.env.PORT || 8000;
 
-const port = process.env.PORT;
-
-const server = new Server(express);
+const server = new Server(app);
 
 server.run(port);

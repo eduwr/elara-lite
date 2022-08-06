@@ -1,13 +1,13 @@
 import { DBClientInterface } from "database/connection";
 import { BadRequestException } from "errorHandler";
-import { CreateUserDto } from "./dto/create.user.dto";
+import { CreateUserDTO } from "./dto/create.user.dto";
 import { UsersRepositoryInterface } from "./interfaces/users.repository.interface";
 import { User } from "./users.model";
 
 export class UserRepository implements UsersRepositoryInterface {
   constructor(private readonly db: DBClientInterface) {}
 
-  async create(data: CreateUserDto): Promise<User> {
+  async create(data: CreateUserDTO): Promise<User> {
     const { age, email, firstName, lastName } = data;
 
     if (!age || !email || !firstName || !lastName) {

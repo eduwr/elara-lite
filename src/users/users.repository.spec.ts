@@ -1,13 +1,13 @@
 import { UserRepository } from "./users.repository";
 import { DBClientInterface } from "../database/connection";
-import { CreateUserDto } from "./dto/create.user.dto";
+import { CreateUserDTO } from "./dto/create.user.dto";
 import { User } from "./users.model";
 import { BadRequestException } from "errorHandler";
 
 describe("UsersRepository", () => {
   let db: jest.MockedObject<DBClientInterface>;
   let userRepository: UserRepository;
-  let createUserDto: CreateUserDto;
+  let createUserDto: CreateUserDTO;
   let userCreated: User;
 
   beforeAll(() => {

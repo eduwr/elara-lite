@@ -1,9 +1,9 @@
-import { User } from "users/users.model";
+import { Request, Response } from "express";
 
-export interface UserControllerInterface {
-  index(): User[];
-  show(): User;
-  create(): User;
-  update(): User;
-  delete(): void;
+export interface UsersControllerInterface {
+  index(req: Request, res: Response): Promise<void>;
+  show(req: Request, res: Response): Promise<void>;
+  create(req: Request, res: Response): Promise<void>;
+  update(req: Request, res: Response): Promise<void>;
+  delete(req: Request, res: Response): Promise<void>;
 }

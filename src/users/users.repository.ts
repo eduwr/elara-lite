@@ -1,5 +1,5 @@
-import { DBClientInterface } from "database/connection";
-import { BadRequestException } from "errorHandler";
+import { DBClientInterface } from "../database/connection";
+import { BadRequestException } from "../errorHandler";
 import { CreateUserDTO } from "./dto/create.user.dto";
 import { UsersRepositoryInterface } from "./interfaces/users.repository.interface";
 import { User } from "./users.model";

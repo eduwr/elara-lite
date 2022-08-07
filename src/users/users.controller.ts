@@ -1,20 +1,42 @@
-import { UserControllerInterface } from "./interfaces/users.controller.interface";
-import { User } from "./users.model";
+import { Request, Response } from "express";
+import { ParamsDictionary } from "express-serve-static-core";
+import { ParsedQs } from "qs";
+import { CreateUserDTO } from "./dto/create.user.dto";
 
-export class UserController implements UserControllerInterface {
-  index(): User[] {
+import { UsersControllerInterface } from "./interfaces/users.controller.interface";
+import { UsersRepositoryInterface } from "./interfaces/users.repository.interface";
+import { UserRepository } from "./users.repository";
+
+export class UsersController implements UsersControllerInterface {
+  constructor(private readonly usersRepository: UserRepository) {
+    this;
+  }
+
+  index(req: Request, res: Response): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  show(): User {
+  show(req: Request, res: Response): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  create(): User {
+  async create(
+    req: Request<
+      ParamsDictionary,
+      unknown,
+      CreateUserDTO,
+      ParsedQs,
+      Record<string, unknown>
+    >,
+    res: Response
+  ) {
+    const usersCreated = await this.usersRepository.create(req.body);
+
+    console.log(usersCreated);
+    res.send(usersCreated);
+  }
+  update(req: Request, res: Response): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  update(): User {
-    throw new Error("Method not implemented.");
-  }
-  delete(): void {
+  delete(req: Request, res: Response): Promise<void> {
     throw new Error("Method not implemented.");
   }
 }

@@ -1,16 +1,19 @@
 import express from "express";
+import usersRoutes from "./users.routes";
 
-const routes = express.Router();
+const mainRoutes = express.Router();
 
-routes.get("/", (req, res) => {
+mainRoutes.get("/", (req, res) => {
   res.send({
     hello: "GET",
   });
 });
-routes.post("/", (req, res) => {
+mainRoutes.post("/", (req, res) => {
   res.send({
     hello: "POST",
   });
 });
 
-export default routes;
+export default mainRoutes;
+
+export const allRoutes = [mainRoutes, usersRoutes];

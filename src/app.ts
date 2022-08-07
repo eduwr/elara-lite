@@ -1,15 +1,15 @@
 import express from "express";
 import dotenv from "dotenv";
-import Routes from "./routes";
+import { allRoutes } from "./routes";
+
 dotenv.config();
 
 const app = express();
 
-app.use(Routes);
-app.get("/test", (req, res) => {
-  res.send({
-    hello: "Test",
-  });
+app.use(express.json());
+
+allRoutes.forEach((route) => {
+  app.use(route);
 });
 
 export default app;

@@ -32,9 +32,17 @@ export class UserRepository implements UsersRepositoryInterface {
 
   private createUserQuery(user: User): string {
     return `
-      INSERT INTO users (id, first_name, last_name, email, age)
-      VALUES('${user.id}', '${user.firstName}', '${user.lastName}', '${user.email}', '${user.age}')
-      RETURNING id first_name, last_name, email, age;
+      INSERT INTO users (id, first_name, last_name, email, age, updated_at, created_at)
+      VALUES(
+        '${user.id}',
+        '${user.firstName}',
+        '${user.lastName}',
+        '${user.email}',
+        '${user.age}',
+        '${new Date().toISOString()}',
+        '${new Date().toISOString()}'
+      )
+      RETURNING id first_name, last_name, email, age updated_at, created_at;
     `;
   }
 }

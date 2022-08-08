@@ -8,13 +8,10 @@ export class UserRepository implements UsersRepositoryInterface {
   constructor(private readonly db: DBClientInterface) {}
   async findAll(): Promise<User[]> {
     // TODO paginate query
-    const { rows } = await this.db.query<User>(`
+    const { rows: users } = await this.db.query<User>(`
       SELECT id, age, first_name as "firstName", last_name as "lastName", created_at as "createdAt", updated_at as "updatedAt" FROM users
     `);
-
-    console.log(rows);
-
-    return rows;
+    return users;
   }
 
   async create(data: CreateUserDTO): Promise<User> {

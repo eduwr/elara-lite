@@ -6,8 +6,15 @@ import { User } from "./users.model";
 
 export class UserRepository implements UsersRepositoryInterface {
   constructor(private readonly db: DBClientInterface) {}
-  findAll(): Promise<User[]> {
-    throw new Error("Method not implemented.");
+  async findAll(): Promise<User[]> {
+    // TODO paginate query
+    const { rows } = await this.db.query<User>(`
+      SELECT id, age, first_name as "firstName", last_name as "lastName", created_at as "createdAt", updated_at as "updatedAt" FROM users
+    `);
+
+    console.log(rows);
+
+    return rows;
   }
 
   async create(data: CreateUserDTO): Promise<User> {
@@ -23,10 +30,6 @@ export class UserRepository implements UsersRepositoryInterface {
     user.email = email;
     user.firstName = firstName;
     user.lastName = lastName;
-
-    const query = this.createUserQuery(user);
-
-    console.log({ query });
 
     const { rows } = await this.db.query<User>(this.createUserQuery(user));
 

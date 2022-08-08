@@ -12,12 +12,17 @@ export class UsersController implements UsersControllerInterface {
     this;
   }
 
-  index(req: Request, res: Response): Promise<void> {
-    throw new Error("Method not implemented.");
+  async index(req: Request, res: Response): Promise<void> {
+    const users = await this.usersRepository.findAll();
+    console.log(users);
+    res.status(200);
+    res.send(users);
   }
+
   show(req: Request, res: Response): Promise<void> {
     throw new Error("Method not implemented.");
   }
+
   async create(
     req: Request<
       ParamsDictionary,
@@ -30,7 +35,7 @@ export class UsersController implements UsersControllerInterface {
   ) {
     const usersCreated = await this.usersRepository.create(req.body);
 
-    console.log(usersCreated);
+    res.status(204);
     res.send(usersCreated);
   }
   update(req: Request, res: Response): Promise<void> {

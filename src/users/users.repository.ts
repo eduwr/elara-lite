@@ -6,6 +6,9 @@ import { User } from "./users.model";
 
 export class UserRepository implements UsersRepositoryInterface {
   constructor(private readonly db: DBClientInterface) {}
+  findAll(): Promise<User[]> {
+    throw new Error("Method not implemented.");
+  }
 
   async create(data: CreateUserDTO): Promise<User> {
     const { age, email, firstName, lastName } = data;
@@ -25,9 +28,9 @@ export class UserRepository implements UsersRepositoryInterface {
 
     console.log({ query });
 
-    const response = this.db.query(this.createUserQuery(user)) as Promise<User>;
+    const { rows } = await this.db.query<User>(this.createUserQuery(user));
 
-    return response;
+    return rows[0];
   }
 
   private createUserQuery(user: User): string {

@@ -3,6 +3,7 @@ import { DBClientInterface } from "../database/connection";
 import { CreateUserDTO } from "./dto/create.user.dto";
 import { User } from "./users.model";
 import { BadRequestException } from "errorHandler";
+import { createUserResponse } from "./__mocks__/mockDbResponses";
 
 describe("UsersRepository", () => {
   let db: jest.MockedObject<DBClientInterface>;
@@ -49,17 +50,20 @@ describe("UsersRepository", () => {
       }).rejects.toThrowError(BadRequestException);
     });
 
-    it("shold call query with correct params", async () => {
+    it("db.query should be called 1 time", async () => {
+      db.query.mockResolvedValue(createUserResponse);
       await userRepository.create(createUserDto);
       expect(db.query).toBeCalledTimes(1);
     });
 
     it("shold return the correct user", async () => {
-      db.query.mockResolvedValue(userCreated);
+      db.query.mockResolvedValue(createUserResponse);
       const user = await userRepository.create(createUserDto);
       expect(db.query).toBeCalledTimes(2);
-      expect(user).toBe(userCreated);
-      console.log(user);
+      expect(user.lastName).toBe(user.lastName);
+      expect(user.firstName).toBe(user.firstName);
+      expect(user.age).toBe(user.age);
+      expect(user.email).toBe(user.email);
     });
   });
 });

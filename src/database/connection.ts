@@ -1,4 +1,4 @@
-import pg from "pg";
+import pg, { QueryResult } from "pg";
 
 export const client = new pg.Client({
   connectionString: "postgres://postgres:example@localhost:5432/db",
@@ -9,7 +9,7 @@ client.query;
 
 export interface DBClientInterface {
   connect(): Promise<void>;
-  query<T = any>(query: string): Promise<unknown>;
+  query<T = unknown>(query: string): Promise<QueryResult<T>>;
   end(): Promise<void>;
 }
 
@@ -20,7 +20,7 @@ export class DBClient implements DBClientInterface {
     await client.connect();
   }
 
-  async query<T = any>(query: string): Promise<unknown> {
+  async query<T = unknown>(query: string): Promise<QueryResult<T>> {
     if (!query) {
       throw new Error("Query not specified.");
     }

@@ -5,11 +5,11 @@ import { UsersController } from "../users/users.controller";
 
 const usersRoutes = express.Router();
 
+// TODO - use IoC instead of instantiating it directly
+// https://ismayilkhayredinov.medium.com/building-a-scoped-ioc-container-for-node-express-8bf082d9887
 const usersRepository = new UserRepository(dbClient);
 
-// console.log(usersRepository);
 const usersController = new UsersController(usersRepository);
-// console.log(usersController);
 
 usersRoutes.get("/users", (req, res) => usersController.index(req, res));
 usersRoutes.get("/users/:id", (req, res) => usersController.show(req, res));

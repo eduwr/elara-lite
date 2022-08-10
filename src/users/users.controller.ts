@@ -4,10 +4,10 @@ import { UsersControllerInterface } from "./interfaces/users.controller.interfac
 import { UsersRepositoryInterface } from "./interfaces/users.repository.interface";
 import { NotFoundException } from "../errorHandler";
 
-
+// TODO - Sanitize and validate requests
+// TODO - Use decorator pattern
 export class UsersController implements UsersControllerInterface {
   constructor(private readonly usersRepository: UsersRepositoryInterface) {
-
   }
 
   async index(req: Request, res: Response): Promise<void> {

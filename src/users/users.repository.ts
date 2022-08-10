@@ -28,22 +28,20 @@ export class UserRepository implements UsersRepositoryInterface {
     user.firstName = firstName;
     user.lastName = lastName;
 
-    const { rows } = await this.db.query<User>(this.createUserQuery(user));
+    const { rows } = await this.db.query<User>(UserRepository.createUserQuery(user));
 
     return rows[0];
   }
 
-  private createUserQuery(user: User): string {
+  private static createUserQuery(user: User): string {
     return `
-      INSERT INTO users (id, first_name, last_name, email, age, updated_at, created_at)
+      INSERT INTO users (id, first_name, last_name, email, age)
       VALUES(
         '${user.id}',
         '${user.firstName}',
         '${user.lastName}',
         '${user.email}',
-        '${user.age}',
-        '${new Date().toISOString()}',
-        '${new Date().toISOString()}'
+        '${user.age}'
       )
       RETURNING id first_name, last_name, email, age updated_at, created_at;
     `;

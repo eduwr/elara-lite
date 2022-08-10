@@ -1,6 +1,6 @@
 
 
-export const createTrigger = (table: string, functionName = "update_updated_at_column", hook = "BEFORE UPDATE") => `
+export const createTrigger = (table: string, functionName = "update_updated_at_column", hook = "BEFORE INSERT OR UPDATE") => `
   CREATE TRIGGER trigger_${functionName}
   ${hook} ON ${table} 
   FOR EACH ROW EXECUTE PROCEDURE  ${functionName}();

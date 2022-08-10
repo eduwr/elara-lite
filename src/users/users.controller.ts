@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import { UsersControllerInterface } from "./interfaces/users.controller.interface";
 import { UsersRepositoryInterface } from "./interfaces/users.repository.interface";
-import { BadRequestException, NotFoundException } from "../errorHandler";
+import { NotFoundException } from "../errorHandler";
 
 
 export class UsersController implements UsersControllerInterface {
@@ -29,7 +29,6 @@ export class UsersController implements UsersControllerInterface {
         res.status(500);
       }
       res.send(e);
-      console.log(e);
     }
   }
 
@@ -45,11 +44,22 @@ export class UsersController implements UsersControllerInterface {
     } catch (e) {
       res.status(400);
       res.send(e);
-      console.log(e);
     }
   }
-  update(req: Request, res: Response): Promise<void> {
-    throw new Error("Method not implemented.");
+  async update(req: Request, res: Response): Promise<void> {
+    try {
+      const userUpdated = await this.usersRepository.updateOne(req.params.id, req.body);
+      res.status(200);
+      res.send(userUpdated);
+
+    } catch (e) {
+      if (e instanceof NotFoundException) {
+        res.status(e.statusCode);
+      } else {
+        res.status(500);
+      }
+      res.send(e);
+    }
   }
   async delete(req: Request, res: Response): Promise<void> {
     try {
@@ -64,7 +74,6 @@ export class UsersController implements UsersControllerInterface {
         res.status(500);
       }
       res.send(e);
-      console.log(e);
     }
   }
 }

@@ -14,7 +14,7 @@ const usersController = new UsersController(usersRepository);
 usersRoutes.get("/users", (req, res) => usersController.index(req, res));
 usersRoutes.get("/users/:id", (req, res) => usersController.show(req, res));
 usersRoutes.post("/users", (req, res) => usersController.create(req, res));
-usersRoutes.patch("/users", usersController.update);
+usersRoutes.patch("/users/:id", (req, res) => usersController.update(req, res));
 usersRoutes.delete("/users/:id", (req, res) => usersController.delete(req, res));
 
 export default usersRoutes;

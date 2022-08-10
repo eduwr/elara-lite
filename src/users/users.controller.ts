@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 
 import { UsersControllerInterface } from "./interfaces/users.controller.interface";
 import { UsersRepositoryInterface } from "./interfaces/users.repository.interface";
-import { BadRequestException } from "../errorHandler";
+import { BadRequestException, NotFoundException } from "../errorHandler";
 
 
 export class UsersController implements UsersControllerInterface {
@@ -17,12 +17,13 @@ export class UsersController implements UsersControllerInterface {
   }
 
   async show(req: Request, res: Response): Promise<void> {
+    // TODO treat request here
     try {
       const user = await this.usersRepository.findOneById({id: req.params.id});
       res.status(200);
       res.send(user);
     } catch (e) {
-      if (e instanceof BadRequestException) {
+      if (e instanceof NotFoundException) {
         res.status(e.statusCode);
       } else {
         res.status(500);
@@ -50,7 +51,20 @@ export class UsersController implements UsersControllerInterface {
   update(req: Request, res: Response): Promise<void> {
     throw new Error("Method not implemented.");
   }
-  delete(req: Request, res: Response): Promise<void> {
-    throw new Error("Method not implemented.");
+  async delete(req: Request, res: Response): Promise<void> {
+    try {
+      await this.usersRepository.deleteById({id: req.params.id});
+      res.status(204);
+      res.send();
+
+    } catch (e) {
+      if (e instanceof NotFoundException) {
+        res.status(e.statusCode);
+      } else {
+        res.status(500);
+      }
+      res.send(e);
+      console.log(e);
+    }
   }
 }

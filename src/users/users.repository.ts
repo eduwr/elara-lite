@@ -58,6 +58,24 @@ export class UserRepository implements UsersRepositoryInterface {
     }
   }
 
+  async deleteById({ id }: { id: string }): Promise<number> {
+    console.log(id);
+    try {
+      const { rowCount } =  await this.db.query(`
+      DELETE FROM users WHERE id = '${id}';
+    `);
+
+      if(!rowCount) {
+        throw new NotFoundException();
+      }
+
+      return rowCount;
+    } catch (e) {
+      throw new NotFoundException();
+    }
+  }
+
+
   private static createUserQuery(user: User): string {
     return `
       INSERT INTO users (id, first_name, last_name, email, age)
@@ -71,6 +89,7 @@ export class UserRepository implements UsersRepositoryInterface {
       RETURNING id first_name, last_name, email, age updated_at, created_at;
     `;
   }
+
 
 
 }

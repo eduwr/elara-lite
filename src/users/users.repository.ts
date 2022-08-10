@@ -9,7 +9,7 @@ export class UserRepository implements UsersRepositoryInterface {
   async findAll(): Promise<User[]> {
     // TODO paginate query
     const { rows: users } = await this.db.query<User>(`
-      SELECT id, age, first_name as "firstName", last_name as "lastName", created_at as "createdAt", updated_at as "updatedAt" FROM users
+      SELECT id, age, email, first_name as "firstName", last_name as "lastName", created_at as "createdAt", updated_at as "updatedAt" FROM users
     `);
     return users;
   }

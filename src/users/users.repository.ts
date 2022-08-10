@@ -28,9 +28,13 @@ export class UserRepository implements UsersRepositoryInterface {
     user.firstName = firstName;
     user.lastName = lastName;
 
-    const { rows } = await this.db.query<User>(UserRepository.createUserQuery(user));
 
-    return rows[0];
+    try {
+      const { rows } = await this.db.query<User>(UserRepository.createUserQuery(user));
+      return rows[0];
+    } catch (err) {
+      throw new BadRequestException();
+    }
   }
 
   private static createUserQuery(user: User): string {

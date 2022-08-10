@@ -12,7 +12,7 @@ const usersController = new UsersController(usersRepository);
 // console.log(usersController);
 
 usersRoutes.get("/users", (req, res) => usersController.index(req, res));
-usersRoutes.get("/users/:id", usersController.show);
+usersRoutes.get("/users/:id", (req, res) => usersController.show(req, res));
 usersRoutes.post("/users", (req, res) => usersController.create(req, res));
 usersRoutes.patch("/users", usersController.update);
 usersRoutes.delete("/users/:id", usersController.delete);

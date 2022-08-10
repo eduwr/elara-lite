@@ -16,8 +16,20 @@ export class UsersController implements UsersControllerInterface {
     res.send(users);
   }
 
-  show(req: Request, res: Response): Promise<void> {
-    throw new Error("Method not implemented.");
+  async show(req: Request, res: Response): Promise<void> {
+    try {
+      const user = await this.usersRepository.findOneById({id: req.params.id});
+      res.status(200);
+      res.send(user);
+    } catch (e) {
+      if (e instanceof BadRequestException) {
+        res.status(e.statusCode);
+      } else {
+        res.status(500);
+      }
+      res.send(e);
+      console.log(e);
+    }
   }
 
   async create(

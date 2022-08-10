@@ -1,5 +1,5 @@
 import { DBClientInterface } from "../database/connection";
-import { BadRequestException } from "../errorHandler";
+import { BadRequestException, InternalServerErrorException, NotFoundException } from "../errorHandler";
 import { CreateUserDTO } from "./dto/create.user.dto";
 import { UsersRepositoryInterface } from "./interfaces/users.repository.interface";
 import { User } from "./users.model";
@@ -12,6 +12,27 @@ export class UserRepository implements UsersRepositoryInterface {
       SELECT id, age, email, first_name as "firstName", last_name as "lastName", created_at as "createdAt", updated_at as "updatedAt" FROM users
     `);
     return users;
+  }
+
+  async findOneById({ id }: { id: string }): Promise<User> {
+
+    try {
+      const { rows, rowCount } = await this.db.query<User>(`
+      SELECT * FROM users WHERE id = '${id}' LIMIT 1;
+    `);
+
+      if(!rowCount) {
+        throw new NotFoundException();
+      }
+
+      return rows[0];
+    } catch (e) {
+      if (e instanceof NotFoundException) {
+        throw new NotFoundException();
+      }
+
+      throw new InternalServerErrorException();
+    }
   }
 
   async create(data: CreateUserDTO): Promise<User> {
@@ -50,4 +71,6 @@ export class UserRepository implements UsersRepositoryInterface {
       RETURNING id first_name, last_name, email, age updated_at, created_at;
     `;
   }
+
+
 }

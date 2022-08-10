@@ -4,4 +4,5 @@ import { User } from "../users.model";
 export interface UsersRepositoryInterface {
   create(data: CreateUserDTO): Promise<User>;
   findAll(): Promise<User[]>;
+  findOneById({id}: {id: string}): Promise<User>;
 }

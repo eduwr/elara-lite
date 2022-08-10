@@ -1,4 +1,4 @@
-import { client } from "../src/database/connection";
+import { client } from "./index";
 
 const up = async () => {
   const createUserTableQuery = `
@@ -13,10 +13,7 @@ const up = async () => {
  );
   `;
 
-  await client.connect();
-
   await client.query(createUserTableQuery);
-  await client.end();
 };
 
 const down = async () => {

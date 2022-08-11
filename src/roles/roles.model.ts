@@ -1,3 +1,5 @@
+import { v4 as uuid } from "uuid";
+
 enum RoleTypeEnum {
   TEACHER = "TEACHER",
   STUDENT = "STUDENT",
@@ -12,6 +14,6 @@ export class Role {
 
   constructor() {
     // TODO - use uuid or nanoId instead
-    this.id = Math.random().toString();
+    this.id = uuid();
   }
 }

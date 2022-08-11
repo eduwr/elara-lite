@@ -1,12 +1,13 @@
 import migration001 from "./001_create-users-table";
 import migration002 from "./002_auto-update-timestamps";
+import migration003 from "./003_add-roles-table";
 import pg from "pg";
 
 export const client = new pg.Client({
   connectionString: "postgres://postgres:example@localhost:5432/db",
 });
 
-const migrations = [migration001, migration002];
+const migrations = [migration001, migration002, migration003];
 
 const runMigrations = async () => {
   await client.connect();

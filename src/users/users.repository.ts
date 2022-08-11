@@ -10,14 +10,19 @@ export class UserRepository implements UsersRepositoryInterface {
 
   async findAll(): Promise<User[]> {
     // TODO paginate query
-    const { rows: users } = await this.db.query<User>(`
+    try{
+      const { rows: users } = await this.db.query<User>(`
       SELECT id, age, email, first_name as "firstName", last_name as "lastName", created_at as "createdAt", updated_at as "updatedAt" FROM users
     `);
-    return users;
+      return users;
+    }catch (e) {
+      console.log(e);
+      throw new NotFoundException();
+    }
+
   }
 
   async findOneById({ id }: { id: string }): Promise<User> {
-
     try {
       const { rows, rowCount } = await this.db.query<User>(`
       SELECT id, age, email, first_name as "firstName", last_name as "lastName", created_at as "createdAt", updated_at as "updatedAt" FROM users WHERE id = '${id}' LIMIT 1;
@@ -61,7 +66,6 @@ export class UserRepository implements UsersRepositoryInterface {
   }
 
   async updateOne(id: string, data: Partial<CreateUserDTO>): Promise<User> {
-
     try {
       const user = await this.findOneById({id});
       if(!user) {
@@ -92,7 +96,6 @@ export class UserRepository implements UsersRepositoryInterface {
   }
 
   async deleteById({ id }: { id: string }): Promise<number> {
-    console.log(id);
     try {
       const { rowCount } =  await this.db.query(`
       DELETE FROM users WHERE id = '${id}';
@@ -119,7 +122,7 @@ export class UserRepository implements UsersRepositoryInterface {
         '${user.email}',
         '${user.age}'
       )
-      RETURNING id first_name, last_name, email, age updated_at, created_at;
+      RETURNING id first_name, last_name, email, age, updated_at, created_at;
     `;
   }
 

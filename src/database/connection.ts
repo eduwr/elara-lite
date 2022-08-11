@@ -5,34 +5,9 @@ export const client = new pg.Client({
 });
 
 client.connect();
-client.query;
 
 export interface DBClientInterface {
   connect(): Promise<void>;
   query<T = unknown>(query: string): Promise<QueryResult<T>>;
   end(): Promise<void>;
-}
-
-export class DBClient implements DBClientInterface {
-  constructor(private readonly client: pg.Client) {}
-
-  async connect(): Promise<void> {
-    await client.connect();
-  }
-
-  async query<T = unknown>(query: string): Promise<QueryResult<T>> {
-    if (!query) {
-      throw new Error("Query not specified.");
-    }
-    await this.connect();
-
-    const response = await this.client.query(query);
-
-    await this.end();
-
-    return response;
-  }
-  async end(): Promise<void> {
-    throw new Error("Method not implemented.");
-  }
 }

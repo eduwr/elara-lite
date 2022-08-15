@@ -21,14 +21,14 @@ describe("UsersRepository", () => {
     userRepository = new UserRepository(db);
 
     createUserDto = {
-      age: 10,
+      birthDate: new Date(2011, 9, 6),
       email: "isaac@mail.com",
       firstName: "Isaac",
       lastName: "Adames",
     };
 
     userCreated = new User();
-    userCreated.age = createUserDto.age;
+    userCreated.birthDate = createUserDto.birthDate.toISOString();
     userCreated.email = createUserDto.email;
     userCreated.firstName = createUserDto.firstName;
     userCreated.lastName = createUserDto.lastName;
@@ -42,7 +42,7 @@ describe("UsersRepository", () => {
     it("should throw an error if called with wrong parameters", async () => {
       await expect(async () => {
         await userRepository.create({
-          age: 0,
+          birthDate: new Date(),
           email: "",
           firstName: "",
           lastName: "",
@@ -62,7 +62,7 @@ describe("UsersRepository", () => {
       expect(db.query).toBeCalledTimes(2);
       expect(user.lastName).toBe(user.lastName);
       expect(user.firstName).toBe(user.firstName);
-      expect(user.age).toBe(user.age);
+      expect(user.birthDate).toBe(user.birthDate);
       expect(user.email).toBe(user.email);
     });
   });

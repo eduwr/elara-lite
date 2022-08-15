@@ -12,7 +12,7 @@ export class UserRepository implements UsersRepositoryInterface {
     // TODO paginate query
     try{
       const { rows: users } = await this.db.query<User>(`
-      SELECT id, age, email, first_name as "firstName", last_name as "lastName", created_at as "createdAt", updated_at as "updatedAt" FROM users
+      SELECT id, birthdate, email, first_name as "firstName", last_name as "lastName", created_at as "createdAt", updated_at as "updatedAt" FROM users
     `);
       return users;
     }catch (e) {
@@ -25,7 +25,7 @@ export class UserRepository implements UsersRepositoryInterface {
   async findOneById({ id }: { id: string }): Promise<User> {
     try {
       const { rows, rowCount } = await this.db.query<User>(`
-      SELECT id, age, email, first_name as "firstName", last_name as "lastName", created_at as "createdAt", updated_at as "updatedAt" FROM users WHERE id = '${id}' LIMIT 1;
+      SELECT id, birthdate, email, first_name as "firstName", last_name as "lastName", created_at as "createdAt", updated_at as "updatedAt" FROM users WHERE id = '${id}' LIMIT 1;
     `);
 
       if(!rowCount) {
@@ -43,15 +43,15 @@ export class UserRepository implements UsersRepositoryInterface {
   }
 
   async create(data: CreateUserDTO): Promise<User> {
-    const { age, email, firstName, lastName } = data;
+    const { birthDate, email, firstName, lastName } = data;
 
-    if (!age || !email || !firstName || !lastName) {
+    if (!birthDate || !email || !firstName || !lastName) {
       throw new BadRequestException();
     }
 
     const user = new User();
 
-    user.age = age;
+    user.birthDate = birthDate.toISOString();
     user.email = email;
     user.firstName = firstName;
     user.lastName = lastName;
@@ -73,16 +73,16 @@ export class UserRepository implements UsersRepositoryInterface {
       }
 
 
-      const { age, email, firstName, lastName } = data;
-      user.age = age || user.age;
+      const { birthDate, email, firstName, lastName } = data;
+      user.birthDate = birthDate?.toISOString() || user.birthDate;
       user.email = email || user.email;
       user.firstName = firstName || user.firstName;
       user.lastName = lastName || user.lastName;
 
       const { rows } = await this.db.query<User>(`
-       UPDATE users SET (first_name, last_name, email, age) = ('${user.firstName}', '${user.lastName}', '${user.email}', '${user.age}')
+       UPDATE users SET (first_name, last_name, email, birth_date) = ('${user.firstName}', '${user.lastName}', '${user.email}', '${user.birthDate}')
        WHERE id = '${user.id}'
-       RETURNING first_name, last_name, email, age, updated_at, created_at;
+       RETURNING first_name, last_name, email, birthdate, updated_at, created_at;
       `);
 
       return rows[0];
@@ -114,18 +114,16 @@ export class UserRepository implements UsersRepositoryInterface {
 
   private static createUserQuery(user: User): string {
     return `
-      INSERT INTO users (id, first_name, last_name, email, age)
+      INSERT INTO users (id, first_name, last_name, email, birth_date)
       VALUES(
         '${user.id}',
         '${user.firstName}',
         '${user.lastName}',
         '${user.email}',
-        '${user.age}'
+        '${user.birthDate}'
       )
-      RETURNING id first_name, last_name, email, age, updated_at, created_at;
+      RETURNING id, first_name as firstName, last_name as lastName, email, birth_date as birthDate, updated_at as updatedAt, created_at as createdAt;
     `;
   }
-
-
 
 }

@@ -1,6 +1,6 @@
 import { v4 as uuid } from "uuid";
 
-enum RoleTypeEnum {
+export enum RoleTypeEnum {
   TEACHER = "TEACHER",
   STUDENT = "STUDENT",
   ADMIN = "ADMIN",

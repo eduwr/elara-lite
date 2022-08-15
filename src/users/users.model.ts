@@ -4,7 +4,8 @@ export class User {
   firstName = "";
   lastName = "";
   email = "";
-  age = 0;
+  birthDate?: string;
+  roleId = "";
 
   constructor() {
     // TODO - use uuid or nanoId instead

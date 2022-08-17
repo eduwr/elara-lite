@@ -1,8 +1,8 @@
-import { Server } from "./server";
-import app from "./app";
+import {createContainer} from "./container";
 
-const port = process.env.PORT || 8000;
 
-const server = new Server(app);
+const c = createContainer();
 
-server.run(port);
+const app = c.App;
+
+app.start();

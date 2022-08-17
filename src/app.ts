@@ -1,15 +1,30 @@
 import express from "express";
 import dotenv from "dotenv";
-import { allRoutes } from "./routes";
+import { RouterInterface } from "./routes/users.routes";
 
 dotenv.config();
 
-const app = express();
+export interface AppInterface {
+  start(): void
+}
 
-app.use(express.json());
+export class App implements AppInterface{
+  constructor(private routes: RouterInterface[]) {
+  }
 
-allRoutes.forEach((route) => {
-  app.use(route);
-});
+  start() {
+    const app = express();
 
-export default app;
+    app.use(express.json());
+
+    this.routes.forEach((route) => {
+      app.use(route.routes);
+
+
+    });
+
+    app.listen(3000, () => {
+      console.log("Listening on 3000");
+    });
+  }
+}

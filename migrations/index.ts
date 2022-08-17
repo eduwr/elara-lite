@@ -5,7 +5,7 @@ import migration004 from "./004_add-user-roles-relationship";
 import pg from "pg";
 
 export const client = new pg.Client({
-  connectionString: "postgres://postgres:example@localhost:5432/db",
+  connectionString: "postgres://postgres:example@localhost:5432/postgres",
 });
 
 const migrations = [migration001, migration002, migration003, migration004];

@@ -1,20 +1,25 @@
-import { client as dbClient } from "../database/connection";
-import express from "express";
-import { UserRepository } from "../users/users.repository";
-import { UsersController } from "../users/users.controller";
+import  {Router} from "express";
 
-const usersRoutes = express.Router();
+import { UsersControllerInterface } from "../users/interfaces/users.controller.interface";
+
 
 // TODO - use IoC instead of instantiating it directly
 // https://ismayilkhayredinov.medium.com/building-a-scoped-ioc-container-for-node-express-8bf082d9887
-const usersRepository = new UserRepository(dbClient);
 
-const usersController = new UsersController(usersRepository);
+export interface RouterInterface {
+  routes: Router
+}
 
-usersRoutes.get("/users", (req, res) => usersController.index(req, res));
-usersRoutes.get("/users/:id", (req, res) => usersController.show(req, res));
-usersRoutes.post("/users", (req, res) => usersController.create(req, res));
-usersRoutes.patch("/users/:id", (req, res) => usersController.update(req, res));
-usersRoutes.delete("/users/:id", (req, res) => usersController.delete(req, res));
+export class UserRoutes implements  RouterInterface {
+  constructor(private userController: UsersControllerInterface, private router: Router) {
+    this.router.get("/users", (req, res) => this.userController.index(req, res));
+    this.router.get("/users/:id", (req, res) => this.userController.show(req, res));
+    this.router.post("/users", (req, res) => this.userController.create(req, res));
+    this.router.patch("/users/:id", (req, res) => this.userController.update(req, res));
+    this.router.delete("/users/:id", (req, res) => this.userController.delete(req, res));
+  }
 
-export default usersRoutes;
+  get routes() {
+    return this.router;
+  }
+}
